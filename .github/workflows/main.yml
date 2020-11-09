@@ -1,0 +1,44 @@
+name: discourse component
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-18.04
+    steps:
+    - name: Timestamp Begin
+      run: date
+
+    - uses: actions/checkout@v1
+
+    - name: Clone highlightjs-mlir
+      uses: actions/checkout@v2
+      with:
+        repository: highlightjs/highlightjs-mlir
+        ref: 'main'
+        path: 'hljs_src'
+
+    - name: Regenerate plugin
+      run: (mkdir hljs_src/build && mkdir hljs_src/build/common
+            cd src/build &&
+            echo '<script type="text/discourse-plugin" version="0.8.27">' > common/head_tag.html &&
+            sed -e 's/hljs.registerLanguage/api.registerHighlightJSLanguage/' ../../dist/mlir.min.js >> common/head_tag.html &&
+            echo '</script>' >> common/head_tag.html &&
+            cp ../../about.json ./
+           ) 
+
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+        publish_branch: component
+        publish_dir: ./hljs_src/build
+        force_orphan: true
+        user_name: 'github-actions[bot]'
+        user_email: 'github-actions[bot]@users.noreply.github.com'
+
+    - name: Timestamp End
+      run: date
