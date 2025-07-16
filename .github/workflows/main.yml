@@ -24,7 +24,10 @@ jobs:
     - name: Regenerate plugin
       run: (mkdir -p hljs_src/build && mkdir -p hljs_src/build/javascripts/discourse/api-initializers/ &&
             cd hljs_src/build &&
+            echo 'import { apiInitializer } from "discourse/lib/api";' >>  javascripts/discourse/api-initializers/init-theme.js &&
+            echo 'export default apiInitializer((api) => {'  >> javascripts/discourse/api-initializers/init-theme.js &&
             sed -e 's/hljs.registerLanguage/api.registerHighlightJSLanguage/' ../dist/mlir.min.js >> javascripts/discourse/api-initializers/init-theme.js &&
+            echo '});' sed -e 's/hljs.registerLanguage/api.registerHighlightJSLanguage/' ../dist/mlir.min.js >> javascripts/discourse/api-initializers/init-theme.js &&            
             cp ../../about.json ./)
             
     - name: Deploy
