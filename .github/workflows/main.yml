@@ -22,11 +22,9 @@ jobs:
         path: 'hljs_src'
 
     - name: Regenerate plugin
-      run: (mkdir -p hljs_src/build && mkdir hljs_src/build/common &&
+      run: (mkdir -p hljs_src/build && mkdir hljs_src/build/javascripts/discourse/api-initializers/ &&
             cd hljs_src/build &&
-            echo '<script type="text/discourse-plugin" version="0.8.27">' > common/head_tag.html &&
-            sed -e 's/hljs.registerLanguage/api.registerHighlightJSLanguage/' ../dist/mlir.min.js >> common/head_tag.html &&
-            echo '</script>' >> common/head_tag.html &&
+            sed -e 's/hljs.registerLanguage/api.registerHighlightJSLanguage/' ../dist/mlir.min.js >> javascripts/discourse/api-initializers/init-theme.js &&
             cp ../../about.json ./)
 
     - name: Deploy
