@@ -27,7 +27,8 @@ jobs:
             echo 'import { apiInitializer } from "discourse/lib/api";' >>  javascripts/discourse/api-initializers/init-theme.js &&
             echo 'export default apiInitializer((api) => {'  >> javascripts/discourse/api-initializers/init-theme.js &&
             sed -e 's/hljs.registerLanguage/api.registerHighlightJSLanguage/' ../dist/mlir.min.js >> javascripts/discourse/api-initializers/init-theme.js &&
-            echo '});' sed -e 's/hljs.registerLanguage/api.registerHighlightJSLanguage/' ../dist/mlir.min.js >> javascripts/discourse/api-initializers/init-theme.js &&            
+            echo '});' >> javascripts/discourse/api-initializers/init-theme.js &&
+            sed -e 's/hljs.registerLanguage/api.registerHighlightJSLanguage/' ../dist/mlir.min.js &&
             cp ../../about.json ./)
             
     - name: Deploy
